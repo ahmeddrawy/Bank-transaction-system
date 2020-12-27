@@ -1,3 +1,4 @@
 src/java/Bank_system/DatabaseConf.java
 build/
 nbproject/
+/dist/
