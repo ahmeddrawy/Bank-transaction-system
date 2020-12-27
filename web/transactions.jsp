@@ -25,6 +25,9 @@
                    if(rs.next()){
 //                       out.print("we get result set");
                         out.print("your balance : " + rs.getDouble("BACurrentBalance"));
+                           out.print("<form action=\"customerhome.jsp\" method=\"POST\">"
+                                +"<input type = \"submit\" value = \"home page\" />"
+                                + "</form >");
                    }else {
                        out.println("error");
                    }
@@ -44,7 +47,6 @@
                 </tr>
             </thead>
             <tbody>
-<!--            <form action="cancelTransaction">-->
                 <%
                     Object BA = session.getAttribute("BankAccountID");
                     if(BA==null){
@@ -67,6 +69,7 @@
                                out.println("<td>"+TDate+" </td>");
                                out.println("<form action=\"cancelTransaction\">");
                                out.println("<input  type = \"hidden\" name = \"TID\" value = \""+TID+"\" >");
+                               out.println("<input  type = \"hidden\" name = \"confirmed\" value = \"false\" >");
                                out.println("<td><input type=\"submit\" value=\"cancel\" /></td>");
                                out.println("</form>");
                                out.println("</tr>");
@@ -79,7 +82,6 @@
                     }
                     
                 %>
-            <!--</form>-->
             </tbody>
         </table>
             <h2>Make a transaction </h2>
