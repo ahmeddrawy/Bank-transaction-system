@@ -25,6 +25,9 @@
                    if(rs.next()){
 //                       out.print("we get result set");
                         out.print("your balance : " + rs.getDouble("BACurrentBalance"));
+                        out.print("<form action=\"transactions.jsp\" method=\"POST\">"
+                                +"<input type = \"submit\" value = \"show transactinos\" />"
+                                + "</form >");
                    }else {
                        out.println("error");
                    }
