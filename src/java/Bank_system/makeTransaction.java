@@ -59,7 +59,7 @@ public class makeTransaction extends HttpServlet {
                     double fromBalance = rsFrom.getDouble("BACurrentBalance");
                     double toBalance = rsTo.getDouble("BACurrentBalance");
                     double transferedAmount =Double.parseDouble( request.getParameter("BTAmount"));
-                    if(fromBalance >= transferedAmount){
+                    if(transferedAmount > 0&&fromBalance >= transferedAmount){
                         fromBalance -=transferedAmount ;
                         toBalance +=transferedAmount ;
                         int rowFrom = BankAccountORM.updateCurrentBalance(BankAccountID, fromBalance);
@@ -68,23 +68,27 @@ public class makeTransaction extends HttpServlet {
                             int rT =  TransactionORM.add(transferedAmount, BankAccountID, toBankAccountID);
                             if(rT > 0 ){
                                 out.println("success");
-                                
+                                 moveback(out);
                             }
                             else {
                                 out.println("adding transaction record failed");
+                                 moveback(out);
                             }
                         }
                         else {
                             out.println("failed");
+                                 moveback(out);
                         }
                     }
                     else {
-                        out.print("you don't have enough balance");
+                        out.print("you don't have enough balance or entered wrong value");
+                                 moveback(out);
                     }
                    
                 }
                 else{
                     out.print("can't process the trasaction");
+                                 moveback(out);
                 }
             }
             else {
@@ -95,10 +99,22 @@ public class makeTransaction extends HttpServlet {
             out.println("</html>");
         } catch (SQLException ex) {
                 response.getWriter().print("can't process transaction");
+                response.getWriter().print("<form action=\"transactions.jsp\" method=\"POST\">"
+                                +"<input type = \"submit\" value = \"show transactinos\" />"
+                                + "</form >");
             Logger.getLogger(makeTransaction.class.getName()).log(Level.SEVERE, null, ex);
+        }catch(Exception e){
+            response.getWriter().print("<form action=\"transactions.jsp\" method=\"POST\">"
+                                +"<input type = \"submit\" value = \"show transactinos\" />"
+                                + "</form >");
         }
     }
-
+    private void moveback(PrintWriter out){
+          out.print("<form action=\"transactions.jsp\" method=\"POST\">"
+                                +"<input type = \"submit\" value = \"show transactinos\" />"
+                                + "</form >");
+                                
+    }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
